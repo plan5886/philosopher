@@ -1,0 +1,11 @@
+{
+	"files.associations": {
+		"__locale": "c",
+		"stdlib.h": "c",
+		"time.h": "c",
+		"stdio.h": "c",
+		"unistd.h": "c",
+		"pthread.h": "c",
+		"types.h": "c"
+	}
+}

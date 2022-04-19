@@ -1,0 +1,75 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   generate_monitors.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/19 04:24:01 by mypark            #+#    #+#             */
+/*   Updated: 2022/04/19 09:53:11 by mypark           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+#include "constant.h"
+#include "utils.h"
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+static int	is_died(t_philo *philo)
+{
+	int		curr_time;
+	t_info	*info;
+
+	info = philo->info;
+	curr_time = gettime_mili(&info->start_tv);
+	if (curr_time - philo->eaten_time > info->time_to_die)
+		return (1);
+	return (0);
+}
+
+static void	*monitor(void *arg)
+{
+	t_philo	*philo;
+	t_info	*info;
+
+	philo = (t_philo *)arg;
+	info = philo->info;
+	while (1)
+	{
+		if (info->grave)
+			break ;
+		if (is_died(philo))
+		{
+			pthread_mutex_lock(&info->monitor_mutex);
+			if (info->grave == 0)
+			{
+				pthread_mutex_lock(&info->print_mutex);
+				printf(MSG_DIED, gettime_mili(&info->start_tv), philo->id + 1);
+				pthread_mutex_unlock(&info->print_mutex);
+			}
+			info->grave = 1;
+			pthread_mutex_unlock(&info->monitor_mutex);
+			break ;
+		}
+	}
+	return (FT_NULL);
+}
+
+int	generate_monitors(t_info *info)
+{
+	int	i;
+
+	pthread_mutex_init(&info->monitor_mutex, NULL);
+	info->monitor_tid = malloc(sizeof(pthread_t) * info->number_of_philos);
+	if (check_error(info->monitor_tid))
+		return (0);
+	i = -1;
+	while (++i < info->number_of_philos)
+	{
+		pthread_create(&info->monitor_tid[i], FT_NULL, \
+						monitor, &info->philos[i]);
+	}
+	return (1);
+}
