@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:04:02 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/19 07:51:56 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/21 06:38:05 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/time.h>
+#include <sys/wait.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include "philo.h"
 #include "constant.h"
 #include "utils.h"
@@ -27,46 +29,53 @@ static int	print_one_philo(t_info *info)
 	return (1);
 }
 
-static void	clear_all(t_info *info)
+static void	clear_all(t_info *info, pid_t *philo_pids)
 {
-	int	i;
-
-	free(info->forks);
-	free(info->tid);
-	free(info->monitor_tid);
-	free(info->philos);
-	i = -1;
-	while (++i < info->number_of_philos)
-		pthread_mutex_destroy(&info->mutexes[i]);
-	pthread_mutex_destroy(&info->monitor_mutex);
-	pthread_mutex_destroy(&info->print_mutex);
-	free(info->mutexes);
+	free(philo_pids);
+	sem_close(info->forks_sem);
+	sem_close(info->print_sem);
 }
 
-static void	join_threads(pthread_t *tid, int num)
+static int	kill_philos(t_info *info, pid_t *philo_pids)
 {
 	int	i;
 
 	i = -1;
-	while (++i < num)
-		pthread_join(tid[i], NULL);
+	while (++i < info->number_of_philos)
+		kill(philo_pids[i], 15);
+	return (0);
+}
+
+static int	monitor_death(t_info *info, pid_t *philo_pids)
+{
+	int	i;
+	int	ws;
+
+	i = -1;
+	while (++i < info->number_of_philos)
+	{
+		waitpid(-1, &ws, 0);
+		if (calc_exit_status(ws) != IMFULL)
+			return (kill_philos(info, philo_pids));
+	}
+	return (0);
 }
 
 int	main(int argc, char **argv)
 {
 	t_info	info;
+	pid_t	*philo_pids;
 
 	if (input_to_info(&info, argc, argv) == 0)
 		return (1);
 	if (info.number_of_philos == 1 && print_one_philo(&info))
 		return (0);
-	info.philos = generate_philos(&info);
-	if (check_error(info.philos))
-		return (1);
-	if (generate_monitors(&info) == 0)
-		return (1);
-	join_threads(info.tid, info.number_of_philos);
-	join_threads(info.monitor_tid, info.number_of_philos);
-	clear_all(&info);
+	generate_semaphores(&info);
+	philo_pids = generate_childs(&info);
+	if (info.philo_id == info.number_of_philos)
+		monitor_death(&info, philo_pids); //wait and kill sig
+	else
+		proc_philo(&info);
+	clear_all(&info, philo_pids);
 	return (0);
 }

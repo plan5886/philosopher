@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   generate_monitors.c                                :+:      :+:    :+:   */
+/*   proc_philo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/19 04:24:01 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/19 09:53:11 by mypark           ###   ########.fr       */
+/*   Created: 2022/04/20 08:15:04 by mypark            #+#    #+#             */
+/*   Updated: 2022/04/20 11:35:35 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include "constant.h"
 #include "utils.h"
-#include <pthread.h>
+#include "constant.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -29,7 +28,7 @@ static int	is_died(t_philo *philo)
 	return (0);
 }
 
-static void	*monitor(void *arg)
+static void	*self_monitor(void *arg)
 {
 	t_philo	*philo;
 	t_info	*info;
@@ -38,38 +37,36 @@ static void	*monitor(void *arg)
 	info = philo->info;
 	while (1)
 	{
-		if (info->grave)
-			break ;
 		if (is_died(philo))
 		{
-			pthread_mutex_lock(&info->monitor_mutex);
-			if (info->grave == 0)
-			{
-				pthread_mutex_lock(&info->print_mutex);
-				printf(MSG_DIED, gettime_mili(&info->start_tv), philo->id + 1);
-				pthread_mutex_unlock(&info->print_mutex);
-			}
-			info->grave = 1;
-			pthread_mutex_unlock(&info->monitor_mutex);
-			break ;
+			sem_wait(info->print_sem);
+			printf(MSG_DIED, gettime_mili(&info->start_tv), philo->id + 1);
+			exit(DIED);
 		}
 	}
 	return (FT_NULL);
 }
 
-int	generate_monitors(t_info *info)
+static void	init_philo(t_philo *philo, t_info *info)
 {
-	int	i;
+	philo->id = info->philo_id;
+	philo->info = info;
+	philo->eaten_time = gettime_mili(&info->start_tv);
+	philo->eat_count = 0;
+}
 
-	pthread_mutex_init(&info->monitor_mutex, NULL);
-	info->monitor_tid = malloc(sizeof(pthread_t) * info->number_of_philos);
-	if (check_error(info->monitor_tid))
-		return (0);
-	i = -1;
-	while (++i < info->number_of_philos)
+void	proc_philo(t_info *info)
+{
+	t_philo	*philo;
+	pthread_t	tid;
+
+	philo = malloc(sizeof(philo));
+	if (philo == FT_NULL)
 	{
-		pthread_create(&info->monitor_tid[i], FT_NULL, \
-						monitor, &info->philos[i]);
+		printf("CHILD MALLOC ERROR\n");
+		exit(ERROR);
 	}
-	return (1);
+	init_philo(philo, info);
+	pthread_create(&tid, FT_NULL, self_monitor, philo);
+	daily_routine(philo);
 }

@@ -1,11 +1,13 @@
 NAME	=	philo_bonus
-SRCS	=	generate_philos.c\
-			generate_monitors.c\
+SRCS	=	generate_childs.c\
+			generate_semaphores.c\
 			daily_routine.c\
+			input_to_info.c\
 			main.c\
 			utils.c\
-			input_to_info.c\
-			ft_atou.c
+			ft_atou.c\
+			calc_exit_status.c\
+			proc_philo.c
 INCS	=	constant.h\
 			philo.h\
 			utils.h

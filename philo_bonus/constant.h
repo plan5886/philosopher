@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:05:36 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/19 08:02:38 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/20 09:19:26 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,12 @@
 # define MSG_EATING			"%d %d is eating\n"
 # define MSG_DIED			"%d %d died\n"
 # define MSG_SLEEPING		"%d %d is sleeping\n"
+
+enum e_exit_status
+{
+	IMFULL,
+	ERROR,
+	DIED
+};
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 17:03:26 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/19 07:46:17 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/20 08:21:15 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,8 @@ void	print_msg(char *fmt, t_philo *philo)
 {
 	int	time;
 
-	pthread_mutex_lock(&philo->info->print_mutex);
-	if (philo->info->grave == 0)
-	{
-		time = gettime_mili(&philo->info->start_tv);
-		printf(fmt, time, philo->id + 1);
-	}
-	pthread_mutex_unlock(&philo->info->print_mutex);
+	sem_wait(philo->info->print_sem);
+	time = gettime_mili(&philo->info->start_tv);
+	printf(fmt, time, philo->id + 1);
+	sem_post(philo->info->print_sem);
 }

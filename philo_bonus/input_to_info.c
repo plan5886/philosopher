@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 19:54:46 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/19 05:10:06 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/20 05:32:50 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	input_to_info(t_info *info, int argc, char **argv)
 		printf("INPUT ERROR\n");
 		return (0);
 	}
-	info->grave = 0;
 	gettimeofday(&info->start_tv, NULL);
 	return (1);
 }
