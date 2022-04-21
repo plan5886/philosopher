@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 08:15:04 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/20 11:35:35 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/21 10:47:39 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	init_philo(t_philo *philo, t_info *info)
 
 void	proc_philo(t_info *info)
 {
-	t_philo	*philo;
+	t_philo		*philo;
 	pthread_t	tid;
 
 	philo = malloc(sizeof(philo));

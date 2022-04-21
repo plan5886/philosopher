@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:04:02 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/21 06:38:05 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/21 10:47:24 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int argc, char **argv)
 	generate_semaphores(&info);
 	philo_pids = generate_childs(&info);
 	if (info.philo_id == info.number_of_philos)
-		monitor_death(&info, philo_pids); //wait and kill sig
+		monitor_death(&info, philo_pids);
 	else
 		proc_philo(&info);
 	clear_all(&info, philo_pids);

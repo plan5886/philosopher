@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 05:56:23 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/20 11:33:10 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/21 10:47:13 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	check_sem_open_error(sem_t *ret)
 
 void	generate_semaphores(t_info *info)
 {
-	int fork_counts;
+	int	fork_counts;
 
 	sem_unlink("forks");
 	sem_unlink("print");

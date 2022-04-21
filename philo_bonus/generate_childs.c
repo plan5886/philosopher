@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 05:56:23 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/21 06:37:37 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/21 10:47:02 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ pid_t	*generate_childs(t_info *info)
 {
 	pid_t	*philo_pids;
 	int		num;
+	int		i;
 
 	philo_pids = malloc(sizeof(pid_t) * info->number_of_philos);
 	if (philo_pids == FT_NULL)
@@ -32,11 +33,13 @@ pid_t	*generate_childs(t_info *info)
 		if (philo_pids[num] == -1)
 		{
 			printf("FORK ERROR\n");
-			// kill childs
+			i = -1;
+			while (++i < num)
+				kill(philo_pids[i], 15);
 			exit(ERROR);
 		}
 		if (philo_pids[num] == 0)
-			break;
+			break ;
 	}
 	info->philo_id = num;
 	return (philo_pids);
