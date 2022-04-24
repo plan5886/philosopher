@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 05:56:23 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/21 10:47:02 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/21 14:26:29 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <signal.h>
 #include "philo.h"
 #include "constant.h"
 
