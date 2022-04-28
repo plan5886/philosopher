@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:04:02 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/21 10:47:24 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/28 16:16:46 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static void	clear_all(t_info *info, pid_t *philo_pids)
 	free(philo_pids);
 	sem_close(info->forks_sem);
 	sem_close(info->print_sem);
+	sem_unlink(info->forks_sem);
+	sem_unlink(info->print_sem);
 }
 
 static int	kill_philos(t_info *info, pid_t *philo_pids)
@@ -65,6 +67,7 @@ int	main(int argc, char **argv)
 {
 	t_info	info;
 	pid_t	*philo_pids;
+	int		parent;
 
 	if (input_to_info(&info, argc, argv) == 0)
 		return (1);
@@ -72,7 +75,8 @@ int	main(int argc, char **argv)
 		return (0);
 	generate_semaphores(&info);
 	philo_pids = generate_childs(&info);
-	if (info.philo_id == info.number_of_philos)
+	parent = (info.philo_id == info.number_of_philos);
+	if (parent)
 		monitor_death(&info, philo_pids);
 	else
 		proc_philo(&info);
