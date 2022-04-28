@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 04:24:01 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/28 11:57:55 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/28 17:11:35 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	*monitor(void *arg)
 	ft_spinlock(&info->start);
 	while (1)
 	{
-		if (info->grave)
+		if (info->grave || philo->eat_count == info->number_of_time_must_eat)
 			break ;
 		if (is_died(philo))
 		{

@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 17:01:11 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/19 07:35:52 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/28 17:12:57 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	philo_eating(t_philo *philo)
 		}
 	}
 	philo->eat_count++;
-	if (philo->eat_count >= info->number_of_time_must_eat)
+	if (philo->eat_count == info->number_of_time_must_eat)
 	{
 		philo_put_forks(philo);
 		return (0);
