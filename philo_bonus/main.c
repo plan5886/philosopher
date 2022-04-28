@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:04:02 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/28 16:16:46 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/28 16:26:30 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static void	clear_all(t_info *info, pid_t *philo_pids)
 	free(philo_pids);
 	sem_close(info->forks_sem);
 	sem_close(info->print_sem);
-	sem_unlink(info->forks_sem);
-	sem_unlink(info->print_sem);
+	sem_unlink("forks");
+	sem_unlink("print");
 }
 
 static int	kill_philos(t_info *info, pid_t *philo_pids)
