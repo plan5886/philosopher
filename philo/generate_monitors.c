@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 04:24:01 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/19 09:53:11 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/28 11:53:44 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 static int	is_died(t_philo *philo)
 {
@@ -29,6 +30,19 @@ static int	is_died(t_philo *philo)
 	return (0);
 }
 
+static void	set_grave(t_info *info, t_philo *philo)
+{
+	pthread_mutex_lock(&info->monitor_mutex);
+	if (info->grave == 0)
+	{
+		pthread_mutex_lock(&info->print_mutex);
+		printf(MSG_DIED, gettime_mili(&info->start_tv), philo->id + 1);
+		pthread_mutex_unlock(&info->print_mutex);
+	}
+	info->grave = 1;
+	pthread_mutex_unlock(&info->monitor_mutex);
+}
+
 static void	*monitor(void *arg)
 {
 	t_philo	*philo;
@@ -36,23 +50,17 @@ static void	*monitor(void *arg)
 
 	philo = (t_philo *)arg;
 	info = philo->info;
+	ft_spinlock(&info->start);
 	while (1)
 	{
 		if (info->grave)
 			break ;
 		if (is_died(philo))
 		{
-			pthread_mutex_lock(&info->monitor_mutex);
-			if (info->grave == 0)
-			{
-				pthread_mutex_lock(&info->print_mutex);
-				printf(MSG_DIED, gettime_mili(&info->start_tv), philo->id + 1);
-				pthread_mutex_unlock(&info->print_mutex);
-			}
-			info->grave = 1;
-			pthread_mutex_unlock(&info->monitor_mutex);
+			set_grave(info, philo);
 			break ;
 		}
+		usleep(1000);
 	}
 	return (FT_NULL);
 }

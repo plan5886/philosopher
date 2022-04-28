@@ -5,7 +5,8 @@ SRCS	=	generate_philos.c\
 			main.c\
 			utils.c\
 			input_to_info.c\
-			ft_atou.c
+			ft_atou.c\
+			ft_spinlock.c
 INCS	=	constant.h\
 			philo.h\
 			utils.h

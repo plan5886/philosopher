@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:05:36 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/19 07:52:07 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/28 11:47:12 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ struct s_info
 	int				time_to_sleep;
 	int				number_of_time_must_eat;
 	struct timeval	start_tv;
+	int				start;
 	int				grave;
 	int				*forks;
 	pthread_mutex_t	*mutexes;
@@ -48,7 +49,7 @@ struct s_philo
 	int				eat_count;
 };
 
-t_philo	*generate_philos(t_info *info);
+int		generate_philos(t_info *info);
 int		generate_monitors(t_info *info);
 int		input_to_info(t_info *info, int argc, char **argv);
 void	*daily_routine(void *arg);

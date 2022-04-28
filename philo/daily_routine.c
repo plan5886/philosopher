@@ -108,6 +108,7 @@ void	*daily_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	info = philo->info;
+	ft_spinlock(&info->start);
 	while (1)
 	{
 		print_msg(MSG_THINKING, philo);

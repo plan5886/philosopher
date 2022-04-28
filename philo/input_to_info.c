@@ -49,6 +49,6 @@ int	input_to_info(t_info *info, int argc, char **argv)
 		return (0);
 	}
 	info->grave = 0;
-	gettimeofday(&info->start_tv, NULL);
+	info->start = 0;
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:04:02 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/19 07:51:56 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/28 11:51:52 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,16 @@ static void	join_threads(pthread_t *tid, int num)
 		pthread_join(tid[i], NULL);
 }
 
+static void	set_start(t_info *info)
+{
+	int	i;
+
+	i = -1;
+	while (++i < info->number_of_philos)
+		info->philos[i].eaten_time = gettime_mili(&info->start_tv);
+	info->start = 1;
+}
+
 int	main(int argc, char **argv)
 {
 	t_info	info;
@@ -60,11 +70,12 @@ int	main(int argc, char **argv)
 		return (1);
 	if (info.number_of_philos == 1 && print_one_philo(&info))
 		return (0);
-	info.philos = generate_philos(&info);
-	if (check_error(info.philos))
+	if (generate_philos(&info) == 0)
 		return (1);
 	if (generate_monitors(&info) == 0)
 		return (1);
+	gettimeofday(&info.start_tv, NULL);
+	set_start(&info);
 	join_threads(info.tid, info.number_of_philos);
 	join_threads(info.monitor_tid, info.number_of_philos);
 	clear_all(&info);

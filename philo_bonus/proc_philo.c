@@ -15,6 +15,7 @@
 #include "constant.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 static int	is_died(t_philo *philo)
 {
@@ -43,6 +44,7 @@ static void	*self_monitor(void *arg)
 			printf(MSG_DIED, gettime_mili(&info->start_tv), philo->id + 1);
 			exit(DIED);
 		}
+		usleep(1000);
 	}
 	return (FT_NULL);
 }
