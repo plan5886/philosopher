@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 04:24:01 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/28 11:53:44 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/28 11:57:55 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,9 @@ int	generate_monitors(t_info *info)
 	i = -1;
 	while (++i < info->number_of_philos)
 	{
-		pthread_create(&info->monitor_tid[i], FT_NULL, \
-						monitor, &info->philos[i]);
+		if (pthread_create(&info->monitor_tid[i], FT_NULL, \
+						monitor, &info->philos[i]))
+			return (0);
 	}
 	return (1);
 }

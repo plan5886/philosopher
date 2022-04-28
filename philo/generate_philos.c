@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 17:21:09 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/28 11:52:20 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/28 15:36:40 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,24 @@ static t_philo	*allocate_philos(t_info *info)
 	return (philos);
 }
 
-static pthread_mutex_t	*allocate_mutexes(int num)
+static int	allocate_mutexes(t_info *info)
 {
-	pthread_mutex_t	*mu;
-	int				i;
+	int	num;
+	int	i;
 
-	mu = malloc(sizeof(pthread_mutex_t) * num);
-	if (mu == FT_NULL)
-		return (FT_NULL);
+	num = info->number_of_philos;
+	info->mutexes = malloc(sizeof(pthread_mutex_t) * num);
+	if (info->mutexes == FT_NULL)
+		return (0);
 	i = -1;
 	while (++i < num)
-		pthread_mutex_init(&mu[i], FT_NULL);
-	return (mu);
+	{
+		if (pthread_mutex_init(&info->mutexes[i], FT_NULL))
+			return (0);
+	}
+	if (pthread_mutex_init(&info->print_mutex, FT_NULL))
+		return (0);
+	return (1);
 }
 
 static int	generate_threads(t_info *info)
@@ -71,7 +77,7 @@ static int	generate_threads(t_info *info)
 	i = -1;
 	while (++i < info->number_of_philos)
 		if (pthread_create(&info->tid[i], \
-		FT_NULL, daily_routine, &info->philos[i]))
+						FT_NULL, daily_routine, &info->philos[i]))
 			return (0);
 	return (1);
 }
@@ -85,9 +91,7 @@ int	generate_philos(t_info *info)
 	if (check_error(info->forks))
 		return (0);
 	memset(info->forks, 0, info->number_of_philos * 4);
-	info->mutexes = allocate_mutexes(info->number_of_philos);
-	pthread_mutex_init(&info->print_mutex, FT_NULL);
-	if (check_error(info->mutexes))
+	if (allocate_mutexes(info) == 0)
 		return (0);
 	info->philos = allocate_philos(info);
 	if (check_error(info->philos))
