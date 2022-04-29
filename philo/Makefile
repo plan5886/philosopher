@@ -1,29 +1,37 @@
 NAME	=	philo
-SRCS	=	generate_philos.c\
-			generate_monitors.c\
+SRCS	=	main.c\
+			allocate_resources.c\
+			check_grave.c\
+			clear_all.c\
 			daily_routine.c\
-			main.c\
-			utils.c\
-			input_to_info.c\
 			ft_atou.c\
-			ft_spinlock.c
+			input_to_info.c\
+			monitor.c\
+			philo_forks.c\
+			utils.c
 INCS	=	constant.h\
 			philo.h\
 			utils.h
+INC_DIR	=	-I./incs
 
-OBJS	=	$(SRCS:.c=.o)
-CFLAGS	=	-Wall -Werror -Wextra #-fsanitize=address
+OBJ_DIR	=	objs
+OBJS	=	$(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
+CFLAGS	=	-Wall -Werror -Wextra -fsanitize=thread -g
+VPATH	=	$(shell ls -R)
 
 all : $(NAME)
 
 $(NAME) : $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@
 
-%.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ_DIR):
+	mkdir $(OBJ_DIR)
+
+$(OBJ_DIR)/%.o : %.c $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@ $(INC_DIR)
 
 clean :
-	rm -f $(OBJS)
+	rm -rf $(OBJ_DIR)
 
 fclean :
 	$(MAKE) clean

@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 17:03:26 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/19 07:46:17 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/29 20:04:15 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,16 @@ int	check_error(void *ret)
 void	print_msg(char *fmt, t_philo *philo)
 {
 	int	time;
+	int	grave;
 
-	pthread_mutex_lock(&philo->info->print_mutex);
-	if (philo->info->grave == 0)
+	pthread_mutex_lock(&philo->info->mutexes->grave);
+	grave = philo->info->grave;
+	pthread_mutex_unlock(&philo->info->mutexes->grave);
+	if (grave == 0)
 	{
+		pthread_mutex_lock(&philo->info->mutexes->terminal_print);
 		time = gettime_mili(&philo->info->start_tv);
 		printf(fmt, time, philo->id + 1);
+		pthread_mutex_unlock(&philo->info->mutexes->terminal_print);
 	}
-	pthread_mutex_unlock(&philo->info->print_mutex);
 }

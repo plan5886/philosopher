@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:05:36 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/28 11:38:30 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/29 15:34:46 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 # include <sys/time.h>
 
 int		check_error(void *ret);
+int		check_grave(t_philo *philo);
 int		gettime_mili(struct timeval *start_tv);
 int		ft_atou(const char *str);
 void	print_msg(char *fmt, t_philo *philo);
-void	ft_spinlock(int *flag);
+int		clear_all(t_global_info *info, t_philo *philos, pthread_t *tids);
 
 #endif

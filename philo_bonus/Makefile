@@ -13,7 +13,7 @@ INCS	=	constant.h\
 			utils.h
 
 OBJS	=	$(SRCS:.c=.o)
-CFLAGS	=	-Wall -Werror -Wextra #-fsanitize=address
+CFLAGS	=	-Wall -Werror -Wextra -fsanitize=thread -g
 
 all : $(NAME)
 

@@ -1,17 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_spinlock.c                                      :+:      :+:    :+:   */
+/*   check_grave.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/28 11:37:31 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/28 11:39:39 by mypark           ###   ########.fr       */
+/*   Created: 2022/04/29 15:34:06 by mypark            #+#    #+#             */
+/*   Updated: 2022/04/29 17:35:53 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_spinlock(int *flag)
+#include "philo.h"
+#include <pthread.h>
+
+int	check_grave(t_philo *philo)
 {
-	while (*flag == 0)
-		;
+	int	grave;
+
+	pthread_mutex_lock(&philo->info->mutexes->grave);
+	grave = philo->info->grave;
+	pthread_mutex_unlock(&philo->info->mutexes->grave);
+	return (grave);
 }

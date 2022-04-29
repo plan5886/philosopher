@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:05:36 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/28 11:47:12 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/29 20:46:33 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,19 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct s_info	t_info;
-typedef struct s_philo	t_philo;
+typedef struct s_global_info	t_global_info;
+typedef struct s_philo			t_philo;
 
-struct s_info
+typedef struct s_mutexes
+{
+	pthread_mutex_t	*philos;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	grave;
+	pthread_mutex_t	start_signal;
+	pthread_mutex_t	terminal_print;
+}				t_mutexes;
+
+struct s_global_info
 {
 	int				number_of_philos;
 	int				time_to_die;
@@ -26,32 +35,33 @@ struct s_info
 	int				time_to_sleep;
 	int				number_of_time_must_eat;
 	struct timeval	start_tv;
-	int				start;
 	int				grave;
 	int				*forks;
-	pthread_mutex_t	*mutexes;
-	pthread_mutex_t	monitor_mutex;
-	pthread_mutex_t	print_mutex;
-	pthread_t		*tid;
-	pthread_t		*monitor_tid;
+	t_mutexes		*mutexes;
 	t_philo			*philos;
 };
 
 struct s_philo
 {
 	int				id;
-	int				*left_fork;
-	int				*right_fork;
-	pthread_mutex_t	*left_mutex;
-	pthread_mutex_t	*right_mutex;
-	t_info			*info;
-	int				eaten_time;
-	int				eat_count;
+	struct timeval	eaten_time;
+	int				number_of_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				number_of_time_must_eat;
+	t_global_info	*info;
 };
 
-int		generate_philos(t_info *info);
-int		generate_monitors(t_info *info);
-int		input_to_info(t_info *info, int argc, char **argv);
+int		philo_get_forks(t_philo *philo);
+int		philo_put_forks(t_philo *philo);
+int		input_to_info(t_global_info *info, int argc, char **argv);
 void	*daily_routine(void *arg);
+int		allocate_resources(\
+	t_global_info *info, \
+	t_philo **philos, \
+	pthread_t **tids\
+);
+void	*monitor(void *arg);
 
 #endif

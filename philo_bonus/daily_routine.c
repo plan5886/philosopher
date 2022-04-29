@@ -26,12 +26,7 @@ static void	philo_put_forks(t_philo *philo)
 
 static void	philo_sleeping(t_philo *philo)
 {
-	int	time;
-	int	interval;
-
 	print_msg(MSG_SLEEPING, philo);
-	time = gettime_mili(&philo->info->start_tv);
-	interval = time + philo->info->time_to_sleep - philo->eaten_time;
 	if (philo->info->time_to_sleep > 0)
 		usleep(philo->info->time_to_sleep * MILI_TO_MICRO);
 	else
