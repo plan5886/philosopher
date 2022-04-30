@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 13:29:53 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/30 11:47:09 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/30 13:00:39 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	*monitor(void *arg)
 	info = (t_global_info *)arg;
 	while (1)
 	{
-		i = 0;
+		i = -1;
 		done = 0;
-		while (i < info->number_of_philos)
+		while (++i < info->number_of_philos)
 		{
 			philo = &info->philos[i];
 			pthread_mutex_lock(&info->mutexes->philos[philo->id]);
@@ -56,7 +56,6 @@ void	*monitor(void *arg)
 				pthread_mutex_unlock(&info->mutexes->grave);
 				return (FT_NULL);
 			}
-			i++;
 		}
 		if (done == info->number_of_philos)
 			return (FT_NULL);

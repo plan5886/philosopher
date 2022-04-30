@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 17:01:11 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/30 11:54:51 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/30 13:00:18 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	*daily_routine(void *arg)
 			break ;
 		if (check_grave(philo) \
 			|| (philo_eating(philo, &personal) \
-			&& philo_put_forks(philo, &personal)))
+			&& !philo_put_forks(philo, &personal)))
 			break ;
 		philo_put_forks(philo, &personal);
 		if (check_grave(philo) || philo_sleeping(philo, &personal))
