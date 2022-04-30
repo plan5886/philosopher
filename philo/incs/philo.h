@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 15:05:36 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/29 20:46:33 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/30 11:04:25 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_mutexes
 	pthread_mutex_t	grave;
 	pthread_mutex_t	start_signal;
 	pthread_mutex_t	terminal_print;
+	pthread_mutex_t	input_info;
 }				t_mutexes;
 
 struct s_global_info
@@ -53,8 +54,18 @@ struct s_philo
 	t_global_info	*info;
 };
 
-int		philo_get_forks(t_philo *philo);
-int		philo_put_forks(t_philo *philo);
+typedef struct s_personal_info
+{
+	int	number_of_philos;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	number_of_time_must_eat;
+	int	philo_id;
+}				t_personal_info;
+
+int		philo_get_forks(t_philo *philo, t_personal_info *personal);
+int		philo_put_forks(t_philo *philo, t_personal_info *personal);
 int		input_to_info(t_global_info *info, int argc, char **argv);
 void	*daily_routine(void *arg);
 int		allocate_resources(\

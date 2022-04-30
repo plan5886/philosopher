@@ -6,7 +6,7 @@
 /*   By: mypark <mypark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 11:43:23 by mypark            #+#    #+#             */
-/*   Updated: 2022/04/29 20:56:42 by mypark           ###   ########.fr       */
+/*   Updated: 2022/04/30 10:35:35 by mypark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static int	init_mutexes(t_global_info *info)
 	if (pthread_mutex_init(&mu->terminal_print, NULL))
 		return (0);
 	if (pthread_mutex_init(&mu->start_signal, NULL))
+		return (0);
+	if (pthread_mutex_init(&mu->input_info, NULL))
 		return (0);
 	i = 0;
 	while (i < info->number_of_philos)
